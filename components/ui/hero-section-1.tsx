@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { AnimatedGroup } from '@/components/ui/animated-group'
 import { cn } from '@/lib/utils'
 import { motion, AnimatePresence } from "framer-motion"
-import { User } from '@supabase/supabase-js'
+import { useSession } from '@/components/SessionProvider'
 
 const transitionVariants = {
     item: {
@@ -36,8 +36,9 @@ const navLinks = [
     { href: "#faq", label: "FAQ" },
 ]
 
-export function HeroSection({ user }: { user: User | null }) {
+export function HeroSection() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const { user, loading } = useSession()
 
     return (
         <section className="relative w-full overflow-hidden bg-background text-foreground">
@@ -57,23 +58,25 @@ export function HeroSection({ user }: { user: User | null }) {
                             ))}
                         </div>
                         <div className="hidden lg:flex items-center gap-4">
-                            {user ? (
-                                <Link href="/dashboard">
-                                    <Button variant="default" className="rounded-full">
-                                        Dashboard
-                                    </Button>
-                                </Link>
-                            ) : (
-                                <>
-                                    <Link href="/login">
-                                        <Button variant="ghost">Login</Button>
-                                    </Link>
-                                    <Link href="/signup">
+                            {!loading && (
+                                user ? (
+                                    <Link href="/dashboard">
                                         <Button variant="default" className="rounded-full">
-                                            Sign Up
+                                            Dashboard
                                         </Button>
                                     </Link>
-                                </>
+                                ) : (
+                                    <>
+                                        <Link href="/login">
+                                            <Button variant="ghost">Login</Button>
+                                        </Link>
+                                        <Link href="/signup">
+                                            <Button variant="default" className="rounded-full">
+                                                Sign Up
+                                            </Button>
+                                        </Link>
+                                    </>
+                                )
                             )}
                         </div>
                         <div className="lg:hidden">
@@ -112,21 +115,23 @@ export function HeroSection({ user }: { user: User | null }) {
                                     </li>
                                 ))}
                                 <li className="border-t border-border pt-4 mt-2">
-                                    {user ? (
-                                        <Link href="/dashboard">
-                                            <Button variant="default" className="w-full">
-                                                Dashboard
-                                            </Button>
-                                        </Link>
-                                    ) : (
-                                        <div className="flex flex-col gap-2">
-                                            <Link href="/login" className="w-full">
-                                                <Button variant="ghost" className="w-full">Login</Button>
+                                    {!loading && (
+                                        user ? (
+                                            <Link href="/dashboard">
+                                                <Button variant="default" className="w-full">
+                                                    Dashboard
+                                                </Button>
                                             </Link>
-                                            <Link href="/signup" className="w-full">
-                                                <Button variant="default" className="w-full">Sign Up</Button>
-                                            </Link>
-                                        </div>
+                                        ) : (
+                                            <div className="flex flex-col gap-2">
+                                                <Link href="/login" className="w-full">
+                                                    <Button variant="ghost" className="w-full">Login</Button>
+                                                </Link>
+                                                <Link href="/signup" className="w-full">
+                                                    <Button variant="default" className="w-full">Sign Up</Button>
+                                                </Link>
+                                            </div>
+                                        )
                                     )}
                                 </li>
                             </ul>
