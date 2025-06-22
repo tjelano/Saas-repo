@@ -28,16 +28,16 @@ export default async function DashboardLayout({
 
     // check user plan in db
     const checkUserInDB = await db.select().from(usersTable).where(eq(usersTable.email, user!.email!))
-    if (checkUserInDB[0].plan === "none") {
-        console.log("User has no plan selected")
+    if (checkUserInDB.length === 0 || checkUserInDB[0].plan === "none") {
+        console.log("User not found in DB or has no plan. Redirecting to subscribe.")
         return redirect('/subscribe')
     }
 
 
     return (
-        <html lang="en">
+        <section>
             <DashboardHeader />
             {children}
-        </html>
+        </section>
     );
 }
