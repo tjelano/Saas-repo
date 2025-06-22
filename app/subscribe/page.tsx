@@ -20,7 +20,7 @@ export default async function Subscribe() {
                     <h1 className="font-bold text-xl md:text-3xl lg:text-4xl ">Pricing</h1>
                     <h1 className="pt-4 text-muted-foreground text-sm md:text-md lg:text-lg">Choose the right plan for your team! Cancel anytime!</h1>
                 </div>
-                <StripePricingTable checkoutSessionSecret={checkoutSessionSecret} />
+                <StripePricingTable checkoutSessionSecret={checkoutSessionSecret} clientReferenceId={user!.id} />
             </div>
         </div>
     )
