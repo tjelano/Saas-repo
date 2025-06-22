@@ -4,13 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npx drizzle-kit migrate && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
+    "migrate:prod": "node scripts/migrate.js",
+    "push:schema": "node scripts/push-schema.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "stripe:setup": "ts-node stripeSetup.ts"
