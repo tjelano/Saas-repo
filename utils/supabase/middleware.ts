@@ -45,6 +45,7 @@ export async function updateSession(request: NextRequest) {
         !request.nextUrl.pathname.startsWith('/auth') &&
         !request.nextUrl.pathname.startsWith('/signup') &&
         !request.nextUrl.pathname.startsWith('/forgot-password') &&
+        !request.nextUrl.pathname.startsWith('/design') &&
         request.nextUrl.pathname !== '/' // Allow access to landing page
     ) {
         // no user, potentially respond by redirecting the user to the login page
