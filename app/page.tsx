@@ -1,3 +1,4 @@
+import { createClient } from '@/utils/supabase/server'
 import { HeroSection } from "@/components/ui/hero-section-1";
 import { HowItWorks } from "@/components/ui/how-it-works";
 import AboutUsSection from "@/components/ui/about-us-section";
@@ -10,6 +11,9 @@ import { Faq3 } from "@/components/ui/faq3";
 export const revalidate = 3600 // Revalidate every hour
 
 export default async function Home() {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   const testimonials = [
     { text: "This service is amazing!", image: "/path/to/image1.png", name: "Jane Doe", role: "CEO" },
     { text: "I love it!", image: "/path/to/image2.png", name: "John Smith", role: "Developer" },
@@ -22,7 +26,7 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
-      <HeroSection />
+      <HeroSection user={user} />
       <HowItWorks />
       <AboutUsSection />
       <TestimonialsColumn testimonials={testimonials} />

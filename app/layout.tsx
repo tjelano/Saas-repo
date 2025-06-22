@@ -3,14 +3,12 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from 'sonner';
 import { ThemeProvider } from '@/components/ThemeProvider';
-import { ThemeToggle } from '@/components/ThemeToggle';
-import { SessionProvider } from '@/components/SessionProvider';
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "SAAS Starter Kit",
-  description: "SAAS Starter Kit with Stripe, Supabase, Postgres",
+  title: "Design Muse AI",
+  description: "AI-Powered Interior Design Studio",
 };
 
 export default function RootLayout({
@@ -29,10 +27,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SessionProvider>
-            {children}
-            <Toaster />
-          </SessionProvider>
+          {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

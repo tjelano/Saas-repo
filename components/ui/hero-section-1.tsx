@@ -2,12 +2,11 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, ChevronRight, Menu, X, Home } from 'lucide-react'
+import { ArrowRight, Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { AnimatedGroup } from '@/components/ui/animated-group'
 import { cn } from '@/lib/utils'
 import { motion, AnimatePresence } from "framer-motion"
-import { useSession } from '@/components/SessionProvider'
+import { User } from '@supabase/supabase-js'
 
 const transitionVariants = {
     item: {
@@ -36,9 +35,8 @@ const navLinks = [
     { href: "#faq", label: "FAQ" },
 ]
 
-export function HeroSection() {
+export function HeroSection({ user }: { user: User | null }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const { user, loading } = useSession()
 
     return (
         <section className="relative w-full overflow-hidden bg-background text-foreground">
@@ -58,25 +56,23 @@ export function HeroSection() {
                             ))}
                         </div>
                         <div className="hidden lg:flex items-center gap-4">
-                            {!loading && (
-                                user ? (
-                                    <Link href="/dashboard">
+                            {user ? (
+                                <Link href="/dashboard">
+                                    <Button variant="default" className="rounded-full">
+                                        Dashboard
+                                    </Button>
+                                </Link>
+                            ) : (
+                                <>
+                                    <Link href="/login">
+                                        <Button variant="ghost">Login</Button>
+                                    </Link>
+                                    <Link href="/signup">
                                         <Button variant="default" className="rounded-full">
-                                            Dashboard
+                                            Sign Up
                                         </Button>
                                     </Link>
-                                ) : (
-                                    <>
-                                        <Link href="/login">
-                                            <Button variant="ghost">Login</Button>
-                                        </Link>
-                                        <Link href="/signup">
-                                            <Button variant="default" className="rounded-full">
-                                                Sign Up
-                                            </Button>
-                                        </Link>
-                                    </>
-                                )
+                                </>
                             )}
                         </div>
                         <div className="lg:hidden">
@@ -115,23 +111,21 @@ export function HeroSection() {
                                     </li>
                                 ))}
                                 <li className="border-t border-border pt-4 mt-2">
-                                    {!loading && (
-                                        user ? (
-                                            <Link href="/dashboard">
-                                                <Button variant="default" className="w-full">
-                                                    Dashboard
-                                                </Button>
+                                    {user ? (
+                                        <Link href="/dashboard">
+                                            <Button variant="default" className="w-full">
+                                                Dashboard
+                                            </Button>
+                                        </Link>
+                                    ) : (
+                                        <div className="flex flex-col gap-2">
+                                            <Link href="/login" className="w-full">
+                                                <Button variant="ghost" className="w-full">Login</Button>
                                             </Link>
-                                        ) : (
-                                            <div className="flex flex-col gap-2">
-                                                <Link href="/login" className="w-full">
-                                                    <Button variant="ghost" className="w-full">Login</Button>
-                                                </Link>
-                                                <Link href="/signup" className="w-full">
-                                                    <Button variant="default" className="w-full">Sign Up</Button>
-                                                </Link>
-                                            </div>
-                                        )
+                                            <Link href="/signup" className="w-full">
+                                                <Button variant="default" className="w-full">Sign Up</Button>
+                                            </Link>
+                                        </div>
                                     )}
                                 </li>
                             </ul>
@@ -200,7 +194,9 @@ const Logo = ({ className }: { className?: string }) => {
     return (
         <Link href="/" className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-600 rounded-lg flex items-center justify-center">
-            <Home className="h-5 w-5 text-white" />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-white">
+                <path d="M12 2L1 9l4 12h14l4-12L12 2zm0 3.315L18.395 9H5.605L12 5.315zM6.928 11h10.144l-1.82 5.46H8.747L6.928 11zM6 20v-2.95l2-6h8l2 6V20H6z"/>
+            </svg>
           </div>
           <span className={cn("text-xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600 bg-clip-text text-transparent", className)}>
             Design Muse
