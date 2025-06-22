@@ -25,7 +25,7 @@ export default async function Home() {
   ];
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
+    <main className="flex min-h-screen flex-col items-center gap-24">
       <HeroSection user={user} />
       <HowItWorks />
       <AboutUsSection />
