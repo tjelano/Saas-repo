@@ -19,15 +19,19 @@ export default async function DashboardLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    // Check if user has plan selected. If not redirect to subscibe
     const supabase = createClient()
 
     const {
         data: { user },
+        error,
     } = await supabase.auth.getUser()
 
+    if (error || !user) {
+        return redirect('/login');
+    }
+
     // check user plan in db
-    const checkUserInDB = await db.select().from(usersTable).where(eq(usersTable.email, user!.email!))
+    const checkUserInDB = await db.select().from(usersTable).where(eq(usersTable.email, user.email!))
     if (checkUserInDB.length === 0 || checkUserInDB[0].plan === "none") {
         console.log("User not found in DB or has no plan. Redirecting to subscribe.")
         return redirect('/subscribe')
