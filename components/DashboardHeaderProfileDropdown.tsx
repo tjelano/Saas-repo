@@ -16,8 +16,21 @@ import { generateStripeBillingPortalLink } from "@/utils/stripe/api"
 
 export default async function DashboardHeaderProfileDropdown() {
     const supabase = createClient()
-    const { data: { user }, error } = await supabase.auth.getUser()
-    const billingPortalURL = await generateStripeBillingPortalLink(user!.email!)
+    const { data: { user } } = await supabase.auth.getUser()
+
+    // Gracefully handle cases where the billing portal link can't be generated
+    let billingPortalURL = '#'; // Default to a safe link
+    if (user && user.email) {
+        try {
+            const portalLink = await generateStripeBillingPortalLink(user.email);
+            if (portalLink) {
+                billingPortalURL = portalLink;
+            }
+        } catch (error) {
+            console.error("Failed to generate Stripe billing portal link:", error);
+        }
+    }
+
     return (
         <nav className="flex items-center">
             <Button variant="ghost" size="icon" className="mr-2">
@@ -46,12 +59,12 @@ export default async function DashboardHeaderProfileDropdown() {
                             <span>Settings</span>
                         </DropdownMenuItem>
                     </Link>
-                    <Link href="#">
-                        <DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <Link href={billingPortalURL}>
                             <ReceiptText className="mr-2 h-4 w-4" />
-                            <Link href={billingPortalURL}>Billing</Link>
-                        </DropdownMenuItem>
-                    </Link>
+                            <span>Billing</span>
+                        </Link>
+                    </DropdownMenuItem>
                     <Link href="#">
                         <DropdownMenuItem>
                             <HelpCircle className="mr-2 h-4 w-4" />

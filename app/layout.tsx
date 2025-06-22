@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,11 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        {children}
-        {/* Required for pricing table */}
-        <Script async src="https://js.stripe.com/v3/pricing-table.js"></Script>
-      </body>
+      {/* Required for pricing table */}
+      <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
