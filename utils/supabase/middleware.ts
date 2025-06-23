@@ -35,7 +35,7 @@ export async function updateSession(request: NextRequest) {
     } = await supabase.auth.getUser()
     const url = request.nextUrl.clone()
 
-    if (request.nextUrl.pathname.startsWith('/webhook')) {
+    if (request.nextUrl.pathname.startsWith('/webhook') || request.nextUrl.pathname.startsWith('/api/debug-env')) {
         return supabaseResponse
     }
 
