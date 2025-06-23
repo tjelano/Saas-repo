@@ -175,7 +175,7 @@ export function HeroSection({ user }: { user: User | null }) {
                             effortlessly, beautifully, uniquely yours.
                         </motion.p>
                         <motion.div variants={transitionVariants.item} className="mt-8 flex justify-center gap-4">
-                            <Link href="/signup">
+                            <Link href={user ? "/dashboard" : "/signup"}>
                                 <Button size="lg" className="rounded-full">
                                     Get Started for Free
                                     <ArrowRight className="ml-2 h-5 w-5" />
