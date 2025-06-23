@@ -1,14 +1,12 @@
-const { execSync } = require('child_process');
+import { execSync } from 'child_process';
+import dotenv from 'dotenv';
 
-console.log('Pushing database schema...');
+dotenv.config({ path: '.env.local' });
 
 try {
-  execSync('npx drizzle-kit push', { 
-    stdio: 'inherit',
-    env: { ...process.env }
-  });
-  console.log('Schema push completed successfully!');
+  execSync('npx drizzle-kit push:pg', { stdio: 'inherit' });
+  console.log('Schema pushed successfully.');
 } catch (error) {
-  console.error('Schema push failed:', error.message);
+  console.error('Failed to push schema:', error);
   process.exit(1);
 } 

@@ -63,8 +63,8 @@ export default function DesignStudio() {
       }
 
       const result = await response.json();
-      if (result.output && result.output.length > 0) {
-        setGeneratedImage(result.output[0]);
+      if (result.output && typeof result.output === 'string') {
+        setGeneratedImage(result.output);
       } else {
         throw new Error("No image was generated.");
       }
