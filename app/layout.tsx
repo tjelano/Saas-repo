@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from 'sonner';
 import { ThemeProvider } from '@/components/ThemeProvider';
-import { logEnvironmentValidation } from '@/utils/env-validation';
+// import { logEnvironmentValidation } from '@/utils/env-validation';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,9 +13,10 @@ export const metadata: Metadata = {
 };
 
 // Validate environment variables on server startup
-if (typeof window === 'undefined') {
-  logEnvironmentValidation();
-}
+// Temporarily disabled to debug API issues
+// if (typeof window === 'undefined') {
+//   logEnvironmentValidation();
+// }
 
 export default function RootLayout({
   children,
