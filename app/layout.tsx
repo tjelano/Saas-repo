@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from 'sonner';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import { logEnvironmentValidation } from '@/utils/env-validation';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,6 +11,11 @@ export const metadata: Metadata = {
   title: "Design Muse AI",
   description: "AI-Powered Interior Design Studio",
 };
+
+// Validate environment variables on server startup
+if (typeof window === 'undefined') {
+  logEnvironmentValidation();
+}
 
 export default function RootLayout({
   children,

@@ -4,9 +4,18 @@ import { eq } from "drizzle-orm";
 import { headers } from 'next/headers'
 import Stripe from 'stripe';
 
+// Add error handling for missing environment variables
+if (!process.env.STRIPE_WEBHOOK_SECRET) {
+  throw new Error("STRIPE_WEBHOOK_SECRET environment variable is not set");
+}
+
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error("STRIPE_SECRET_KEY environment variable is not set");
+}
+
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 export async function POST(request: Request) {
     const sig = headers().get('stripe-signature') as string;

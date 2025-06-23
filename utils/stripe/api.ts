@@ -2,8 +2,15 @@ import { Stripe } from 'stripe';
 import { db } from '../db/db';
 import { usersTable } from '../db/schema';
 import { eq } from "drizzle-orm";
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+
+// Add error handling for missing environment variables
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error("STRIPE_SECRET_KEY environment variable is not set");
+}
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL ? process.env.NEXT_PUBLIC_WEBSITE_URL : "http://localhost:3000"
+
 export async function getStripePlan(email: string) {
     const user = await db.select().from(usersTable).where(eq(usersTable.email, email))
     if (!user || user.length === 0) {
