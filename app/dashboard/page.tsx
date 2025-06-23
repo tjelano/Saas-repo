@@ -1,7 +1,8 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+'use client'
+
+import { ImageGallery } from "@/components/ImageGallery";
+import { Home, Plus, Settings, Star, Folder } from "lucide-react";
 import Link from "next/link";
-import { Plus, Folder, Star, Settings, Home } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 // Example interior design renders data - aligned with Design Studio templates
@@ -132,29 +133,8 @@ export default function Dashboard() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto p-4">
-        <div className="flex flex-wrap gap-4">
-          {designExamples.map((example) => (
-            <Link key={example.id} href={`/design?template=${example.templateId}`} className="w-[calc(33.333%-1rem)]">
-              <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group h-full flex flex-col">
-                <div className="w-full h-48 bg-muted flex items-center justify-center">
-                  <img src={example.image} alt={example.title} className="w-full h-full object-cover" />
-                </div>
-                <CardContent className="p-3 flex-1">
-                  <h3 className="font-semibold text-sm mb-1">{example.title}</h3>
-                  <div className="flex space-x-1">
-                    <span className="px-2 py-0.5 text-xs bg-primary/10 text-primary rounded-full">
-                      {example.style}
-                    </span>
-                    <span className="px-2 py-0.5 text-xs bg-secondary text-secondary-foreground rounded-full">
-                      {example.room}
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
+      <div className="flex-1 overflow-y-auto p-8">
+        <ImageGallery />
       </div>
     </div>
   );
