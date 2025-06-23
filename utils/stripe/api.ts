@@ -47,6 +47,10 @@ export async function createStripeCheckoutSession(email: string) {
 
 export async function generateStripeBillingPortalLink(email: string) {
     const user = await db.select().from(usersTable).where(eq(usersTable.email, email))
+    if (!user || user.length === 0 || !user[0].stripe_id) {
+        // No Stripe ID found, return null so the UI can handle this gracefully
+        return null;
+    }
     const portalSession = await stripe.billingPortal.sessions.create({
         customer: user[0].stripe_id,
         return_url: `${PUBLIC_URL}/dashboard`,

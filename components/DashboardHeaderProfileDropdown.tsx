@@ -6,82 +6,89 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Bell, ReceiptText, User, Settings, HelpCircle, LogOut } from "lucide-react"
+import { Bell, ReceiptText, User, Settings, HelpCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { } from "@supabase/supabase-js"
+import LogoutButton from "@/components/LogoutButton"
 import { createClient } from '@/utils/supabase/server'
-import { logout } from '@/app/auth/actions'
-import { generateStripeBillingPortalLink } from "@/utils/stripe/api"
+import { generateStripeBillingPortalLink } from '@/utils/stripe/api'
 
 export default async function DashboardHeaderProfileDropdown() {
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    // Gracefully handle cases where the billing portal link can't be generated
-    let billingPortalURL = '#'; // Default to a safe link
+    let billingPortalURL = '#'
+    let billingPortalAvailable = false
     if (user && user.email) {
         try {
-            const portalLink = await generateStripeBillingPortalLink(user.email);
+            const portalLink = await generateStripeBillingPortalLink(user.email)
             if (portalLink) {
-                billingPortalURL = portalLink;
+                billingPortalURL = portalLink
+                billingPortalAvailable = true
             }
         } catch (error) {
-            console.error("Failed to generate Stripe billing portal link:", error);
+            console.error("Failed to generate Stripe billing portal link:", error)
         }
     }
 
     return (
-        <nav className="flex items-center">
-            <Button variant="ghost" size="icon" className="mr-2">
-                <Bell className="h-4 w-4" />
-                <span className="sr-only">Notifications</span>
-            </Button>
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
                         <User className="h-4 w-4" />
-                        <span className="sr-only">Open user menu</span>
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <Link href="#">
-                        <DropdownMenuItem>
-                            <User className="mr-2 h-4 w-4" />
-                            <span>Profile</span>
-                        </DropdownMenuItem>
+                    </div>
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                        <p className="text-sm font-medium leading-none">{user?.user_metadata?.full_name || user?.email}</p>
+                        <p className="text-xs leading-none text-muted-foreground">
+                            {user?.email}
+                        </p>
+                    </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                    <Link href="/dashboard">
+                        <User className="mr-2 h-4 w-4" />
+                        <span>Profile</span>
                     </Link>
-                    <Link href="#">
-                        <DropdownMenuItem>
-                            <Settings className="mr-2 h-4 w-4" />
-                            <span>Settings</span>
-                        </DropdownMenuItem>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href="/design">
+                        <Settings className="mr-2 h-4 w-4" />
+                        <span>Design Studio</span>
                     </Link>
-                    <DropdownMenuItem asChild>
-                        <Link href={billingPortalURL}>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href="/inspiration">
+                        <HelpCircle className="mr-2 h-4 w-4" />
+                        <span>Inspiration</span>
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                    {billingPortalAvailable ? (
+                        <Link href={billingPortalURL} className="">
                             <ReceiptText className="mr-2 h-4 w-4" />
                             <span>Billing</span>
                         </Link>
-                    </DropdownMenuItem>
-                    <Link href="#">
-                        <DropdownMenuItem>
-                            <HelpCircle className="mr-2 h-4 w-4" />
-                            <span>Help</span>
-                        </DropdownMenuItem>
-                    </Link>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                        <form action={logout} className="w-full">
-                            <button type="submit" className="w-full flex" >
-                                <LogOut className="mr-2 h-4 w-4" />
-                                <span > Log out</span>
-                            </button>
-                        </form>
-                    </DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
-        </nav>
+                    ) : (
+                        <span className="opacity-50 cursor-not-allowed flex items-center">
+                            <ReceiptText className="mr-2 h-4 w-4" />
+                            <span>Billing</span>
+                        </span>
+                    )}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                    <LogoutButton variant="ghost" className="w-full justify-start p-0 h-auto" showIcon={false}>
+                        Log out
+                    </LogoutButton>
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
     )
 }

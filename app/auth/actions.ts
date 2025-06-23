@@ -118,7 +118,8 @@ export async function loginUser(currentState: { message: string }, formData: For
     }
 
     revalidatePath('/', 'layout')
-    redirect('/dashboard')
+    // Force session sync via callback
+    redirect(`/auth/callback?next=/dashboard`)
 }
 
 

@@ -9,25 +9,63 @@ import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider";
 import { UploadCloud, Sparkles, Settings, Home, ArrowLeft } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import LogoutButton from "@/components/LogoutButton";
 
-const stylePresets = ["Modern", "Farmhouse", "Scandinavian", "Industrial", "Coastal", "Bohemian"];
+const stylePrompts: { [key: string]: string } = {
+  Modern: "A modern living room with minimalist design, open space, large windows, neutral color palette, sleek furniture, and subtle accent lighting",
+  Farmhouse: "A warm farmhouse kitchen featuring rustic wooden beams, white shiplap walls, vintage-inspired fixtures, open shelving, and a large farmhouse sink",
+  Scandinavian: "A Scandinavian bedroom with abundant natural light, white and pale wood tones, minimalist furniture, cozy textiles, and touches of greenery",
+  Industrial: "An industrial loft with exposed brick walls, concrete floors, black metal fixtures, large factory windows, and reclaimed wood accents",
+  Coastal: "A coastal living room with soft blue and white tones, natural textures like rattan and linen, large windows, and beach-inspired decor",
+  Bohemian: "A bohemian reading nook filled with colorful patterned textiles, layered rugs, hanging plants, eclectic furniture, and artistic decor",
+};
+const stylePresets = ["Modern", "Farmhouse", "Scandinavian", "Industrial", "Coastal", "Bohemian", "Custom"];
 
 export default function DesignStudio() {
   const [beforeImage, setBeforeImage] = useState<string | null>(null);
   const [beforeImageFile, setBeforeImageFile] = useState<File | null>(null);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
-  const [customPrompt, setCustomPrompt] = useState("A modern minimalist living room with clean lines, neutral colors, and contemporary furniture");
-  const [negativePrompt, setNegativePrompt] = useState("lowres, watermark, banner, logo, text, deformed, blurry, ugly, mirror");
   const [selectedStyle, setSelectedStyle] = useState("Modern");
+  const [customPrompt, setCustomPrompt] = useState(stylePrompts["Modern"]);
+  const [negativePrompt, setNegativePrompt] = useState("lowres, watermark, banner, logo, text, deformed, blurry, ugly, mirror");
   const [styleFidelity, setStyleFidelity] = useState(0.8);
   const [creativeGuidance, setCreativeGuidance] = useState(15);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [userCustomPrompt, setUserCustomPrompt] = useState("");
+  const [lastStyle, setLastStyle] = useState("Modern");
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setBeforeImageFile(file);
       setBeforeImage(URL.createObjectURL(file));
+    }
+  };
+
+  const handleStyleSelect = (style: string) => {
+    if (style === "Custom") {
+      setSelectedStyle("Custom");
+      setCustomPrompt(userCustomPrompt || "");
+      return;
+    }
+    if (
+      selectedStyle === "Custom" ||
+      customPrompt === stylePrompts[selectedStyle] ||
+      customPrompt === ""
+    ) {
+      setCustomPrompt(stylePrompts[style]);
+    } else {
+      setUserCustomPrompt(customPrompt);
+    }
+    setSelectedStyle(style);
+    setLastStyle(style);
+  };
+
+  const handlePromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCustomPrompt(e.target.value);
+    if (selectedStyle !== "Custom") {
+      setUserCustomPrompt(e.target.value);
+      setSelectedStyle("Custom");
     }
   };
 
@@ -98,6 +136,7 @@ export default function DesignStudio() {
                     Dashboard
                 </Button>
                 </Link>
+                <LogoutButton variant="outline" size="sm" />
                 <ThemeToggle />
             </div>
           </div>
@@ -175,7 +214,7 @@ export default function DesignStudio() {
                       key={style}
                       size="sm"
                       variant={selectedStyle === style ? "default" : "outline"}
-                      onClick={() => setSelectedStyle(style)}
+                      onClick={() => handleStyleSelect(style)}
                     >
                       {style}
                     </Button>
@@ -196,7 +235,7 @@ export default function DesignStudio() {
                 <Textarea
                   id="design-prompt"
                   value={customPrompt}
-                  onChange={(e) => setCustomPrompt(e.target.value)}
+                  onChange={handlePromptChange}
                   rows={2}
                   className="text-xs"
                 />

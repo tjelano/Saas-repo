@@ -118,15 +118,7 @@ export default function AboutUsSection() {
       ref={sectionRef}
       className="w-full py-24 px-4 bg-background text-foreground overflow-hidden relative"
     >
-      {/* Decorative background elements */}
-      <motion.div
-        className="absolute top-20 left-10 w-64 h-64 rounded-full bg-primary/5 blur-3xl"
-        style={{ y: y1 }}
-      />
-      <motion.div
-        className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-secondary/5 blur-3xl"
-        style={{ y: y2 }}
-      />
+      {/* Decorative background elements removed for a cleaner look */}
 
       <motion.div
         className="container mx-auto max-w-6xl relative z-10"

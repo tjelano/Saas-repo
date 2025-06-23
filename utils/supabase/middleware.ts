@@ -6,6 +6,9 @@ export async function updateSession(request: NextRequest) {
         request,
     })
 
+    // Debug: log all cookies
+    console.log('Middleware - All Cookies:', request.cookies.getAll())
+
     const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -35,7 +38,10 @@ export async function updateSession(request: NextRequest) {
     } = await supabase.auth.getUser()
     const url = request.nextUrl.clone()
 
-    if (request.nextUrl.pathname.startsWith('/webhook') || request.nextUrl.pathname.startsWith('/api/debug-env')) {
+    // Debug logging
+    console.log('Middleware - Path:', request.nextUrl.pathname, 'User:', user?.email || 'No user')
+
+    if (request.nextUrl.pathname.startsWith('/webhook')) {
         return supabaseResponse
     }
 
@@ -45,10 +51,14 @@ export async function updateSession(request: NextRequest) {
         !request.nextUrl.pathname.startsWith('/auth') &&
         !request.nextUrl.pathname.startsWith('/signup') &&
         !request.nextUrl.pathname.startsWith('/forgot-password') &&
-        !request.nextUrl.pathname.startsWith('/design') &&
-        request.nextUrl.pathname !== '/' // Allow access to landing page
+        !request.nextUrl.pathname.startsWith('/subscribe') &&
+        !request.nextUrl.pathname.startsWith('/debug-session') &&
+        request.nextUrl.pathname !== '/' &&
+        !request.nextUrl.pathname.startsWith('/dashboard') &&
+        !request.nextUrl.pathname.startsWith('/design')
     ) {
         // no user, potentially respond by redirecting the user to the login page
+        console.log('Middleware - Redirecting to login, no user found')
         url.pathname = '/login'
         return NextResponse.redirect(url)
     }
