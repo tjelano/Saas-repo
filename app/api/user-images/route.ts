@@ -3,6 +3,8 @@ import { db } from '@/utils/db/db';
 import { generatedImagesTable } from '@/utils/db/schema';
 import { eq, desc } from 'drizzle-orm';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const limit = parseInt(searchParams.get('limit') || '20');
