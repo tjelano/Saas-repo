@@ -16,9 +16,6 @@ export async function GET(request: Request) {
   }
 
   try {
-    // Log the environment variable for debugging
-    console.log("DATABASE_URL seen by API:", process.env.DATABASE_URL);
-
     // Get total count
     const countResult = await db
       .select({ count: generatedImagesTable.id })
