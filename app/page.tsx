@@ -1,4 +1,3 @@
-import { createClient } from '@/utils/supabase/server'
 import { HeroSection } from "@/components/ui/hero-section-1";
 import { HowItWorks } from "@/components/ui/how-it-works";
 import AboutUsSection from "@/components/ui/about-us-section";
@@ -10,10 +9,7 @@ import { Faq3 } from "@/components/ui/faq3";
 // This makes the page dynamic instead of static
 export const revalidate = 3600 // Revalidate every hour
 
-export default async function Home() {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
+export default function Home() {
   const testimonials = [
     { text: "This service is amazing! It completely transformed my living room.", image: "https://randomuser.me/api/portraits/women/44.jpg", name: "Sarah Johnson", role: "Homeowner" },
     { text: "I love it! The AI gave me ideas I would have never thought of.", image: "https://randomuser.me/api/portraits/men/32.jpg", name: "Michael Smith", role: "DIY Enthusiast" },
@@ -30,7 +26,7 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center gap-24">
-      <HeroSection user={user} />
+      <HeroSection />
       <HowItWorks />
       <AboutUsSection />
       <TestimonialsColumn testimonials={testimonials} />
