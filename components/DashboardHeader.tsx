@@ -2,29 +2,10 @@ import { Bell, Menu, Search, Home, Plus, Star } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import Image from 'next/image'
-import { createClient } from '@/utils/supabase/server'
-import DashboardHeaderProfileDropdown from "./DashboardHeaderProfileDropdown"
 import { Badge } from "@/components/ui/badge"
-import { getStripePlan } from "@/utils/stripe/api"
-import { Suspense } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
 
-const stylePlanFallback = "No Plan"
-
-export default async function DashboardHeader() {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    
-    let stripePlan = null
-    if (user?.email) {
-        try {
-            stripePlan = await getStripePlan(user.email)
-        } catch (error) {
-            console.error("Failed to get Stripe plan:", error)
-        }
-    }
-
+export default function DashboardHeader() {
     return (
         <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container flex h-16 max-w-screen-2xl items-center">
@@ -37,11 +18,7 @@ export default async function DashboardHeader() {
                             Design Muse
                         </span>
                     </Link>
-                    <Suspense fallback={<Badge variant="outline" className="mr-2"><Skeleton className="w-[50px] h-[20px] rounded-full" /></Badge>}>
-                        <Badge variant="outline" className="mr-2">
-                            {stripePlan || stylePlanFallback}
-                        </Badge>
-                    </Suspense>
+                    <Badge variant="outline" className="mr-2">No Plan</Badge>
                     <nav className="flex items-center space-x-6 text-sm font-medium">
                         <Link className="transition-colors hover:text-foreground text-foreground flex items-center space-x-1" href="/dashboard">
                             <Home className="w-4 h-4" />
@@ -74,7 +51,6 @@ export default async function DashboardHeader() {
                             </div>
                         </form>
                     </div>
-                    <DashboardHeaderProfileDropdown />
                 </div>
             </div>
         </header>

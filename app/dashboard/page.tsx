@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Plus, Sparkles, Star, TrendingUp, Users, Zap } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import DashboardHeader from "@/components/DashboardHeader";
-import { createClient } from '@/utils/supabase/server';
 
 // Example interior design renders data - aligned with Design Studio templates
 const designExamples = [
@@ -117,13 +116,7 @@ const stats = [
   { label: "Collaborators", value: "3", icon: Users, change: "+1", changeType: "positive" },
 ];
 
-export default async function Dashboard() {
-  // Remove Supabase user check so anyone can access
-  // const supabase = createClient();
-  // const { data: { user } } = await supabase.auth.getUser();
-  // Debug: Log user info
-  // console.log('Dashboard user:', user?.email, user?.id);
-
+export default function Dashboard() {
   return (
     <div className="min-h-screen bg-background">
       <DashboardHeader />
