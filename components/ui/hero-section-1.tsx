@@ -1,12 +1,12 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Menu, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { motion, AnimatePresence } from "framer-motion"
-import { User } from '@supabase/supabase-js'
+import { createClient } from '@/utils/supabase/client'
 
 const transitionVariants = {
     item: {
@@ -37,6 +37,27 @@ const navLinks = [
 
 export function HeroSection() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+    useEffect(() => {
+        const supabase = createClient()
+        supabase.auth.getUser().then(({ data }) => {
+            setIsLoggedIn(!!data.user)
+        })
+        // Listen for auth changes
+        const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+            setIsLoggedIn(!!session?.user)
+        })
+        return () => {
+            listener?.subscription.unsubscribe()
+        }
+    }, [])
+
+    const handleLogout = async () => {
+        const supabase = createClient()
+        await supabase.auth.signOut()
+        window.location.reload()
+    }
 
     return (
         <section className="relative w-full overflow-hidden text-foreground">
@@ -66,16 +87,24 @@ export function HeroSection() {
                             ))}
                         </div>
                         <div className="hidden lg:flex items-center gap-4">
-                            <Link href="/dashboard">
-                                <Button variant="default" className="rounded-full">
-                                    Dashboard
-                                </Button>
-                            </Link>
-                            <Link href="/design">
-                                <Button variant="default" className="rounded-full">
-                                    Design
-                                </Button>
-                            </Link>
+                            {isLoggedIn ? (
+                                <>
+                                    <Link href="/dashboard">
+                                        <Button variant="default" className="rounded-full">
+                                            Dashboard
+                                        </Button>
+                                    </Link>
+                                    <Button variant="outline" className="rounded-full" onClick={handleLogout}>
+                                        <LogOut className="w-4 h-4 mr-2" /> Log out
+                                    </Button>
+                                </>
+                            ) : (
+                                <Link href="/login">
+                                    <Button variant="default" className="rounded-full">
+                                        Log in
+                                    </Button>
+                                </Link>
+                            )}
                         </div>
                         <div className="lg:hidden">
                             <Button
@@ -114,16 +143,24 @@ export function HeroSection() {
                                 ))}
                                 <li className="border-t border-border pt-4 mt-2">
                                     <div className="flex flex-col gap-2">
-                                        <Link href="/dashboard" className="w-full">
-                                            <Button variant="default" className="w-full">
-                                                Dashboard
-                                            </Button>
-                                        </Link>
-                                        <Link href="/design" className="w-full">
-                                            <Button variant="default" className="w-full">
-                                                Design
-                                            </Button>
-                                        </Link>
+                                        {isLoggedIn ? (
+                                            <>
+                                                <Link href="/dashboard" className="w-full">
+                                                    <Button variant="default" className="w-full">
+                                                        Dashboard
+                                                    </Button>
+                                                </Link>
+                                                <Button variant="outline" className="w-full" onClick={handleLogout}>
+                                                    <LogOut className="w-4 h-4 mr-2" /> Log out
+                                                </Button>
+                                            </>
+                                        ) : (
+                                            <Link href="/login" className="w-full">
+                                                <Button variant="default" className="w-full">
+                                                    Log in
+                                                </Button>
+                                            </Link>
+                                        )}
                                     </div>
                                 </li>
                             </ul>
@@ -189,7 +226,6 @@ export function HeroSection() {
         </section>
     )
 }
-
 
 const Logo = ({ className }: { className?: string }) => {
     return (
