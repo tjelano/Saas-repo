@@ -5,7 +5,6 @@ import { PricingSectionDemo } from "@/components/ui/pricing-section-demo";
 import { TestimonialsColumn } from "@/components/ui/testimonials-columns-1";
 import { Footer } from "@/components/ui/footer";
 import { Faq3 } from "@/components/ui/faq3";
-import Header from "@/components/Header";
 
 // This makes the page dynamic instead of static
 export const revalidate = 3600 // Revalidate every hour
@@ -26,25 +25,22 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header />
-      <main className="flex min-h-screen flex-col items-center gap-24">
-        <HeroSection />
-        <HowItWorks />
-        <AboutUsSection />
-        <TestimonialsColumn testimonials={testimonials} />
-        <PricingSectionDemo />
-        <Faq3
-          heading="Frequently Asked Questions"
-          description="Here are some of our most asked questions."
-          items={faqItems}
-          supportHeading="Still have questions?"
-          supportDescription="Contact us for more information."
-          supportButtonText="Contact Us"
-          supportButtonUrl="/contact"
-        />
-        <Footer />
-      </main>
-    </div>
+    <main className="flex min-h-screen flex-col items-center gap-24">
+      <HeroSection />
+      <HowItWorks />
+      <AboutUsSection />
+      <TestimonialsColumn testimonials={testimonials} />
+      <PricingSectionDemo />
+      <Faq3
+        heading="Frequently Asked Questions"
+        description="Here are some of our most asked questions."
+        items={faqItems}
+        supportHeading="Still have questions?"
+        supportDescription="Contact us for more information."
+        supportButtonText="Contact Us"
+        supportButtonUrl="/contact"
+      />
+      <Footer />
+    </main>
   );
 }
