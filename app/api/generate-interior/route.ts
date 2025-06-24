@@ -1,5 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { createClient } from "@/utils/supabase/server"
 import { db } from "@/utils/db/db"
 import { designsTable } from "@/utils/db/schema"
 import { randomUUID } from "crypto"
@@ -13,13 +12,6 @@ if (!REPLICATE_API_TOKEN) {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
     const formData = await request.formData()
     const image = formData.get("image") as File
     const paramsString = formData.get("params") as string
