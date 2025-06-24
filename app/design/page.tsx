@@ -10,6 +10,7 @@ import { Slider } from "@/components/ui/slider";
 import { UploadCloud, Sparkles, Settings, Home, ArrowLeft } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Image from "next/image";
+import Header from "@/components/Header";
 
 const stylePrompts: { [key: string]: string } = {
   Modern: "A modern living room with minimalist design, open space, large windows, neutral color palette, sleek furniture, and subtle accent lighting",
@@ -117,30 +118,7 @@ export default function DesignStudio() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <div className="border-b border-border sticky top-0 bg-background/95 z-10">
-        <div className="container mx-auto px-6 py-3">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-600 rounded flex items-center justify-center">
-                <Home className="h-5 w-5 text-white" />
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600 bg-clip-text text-transparent animate-pulse hidden sm:inline">
-                Design Muse
-              </span>
-            </Link>
-            <div className="flex items-center space-x-2">
-                <Link href="/dashboard">
-                <Button variant="outline" size="sm">
-                    <ArrowLeft className="w-4 h-4 mr-2" />
-                    Dashboard
-                </Button>
-                </Link>
-                <ThemeToggle />
-            </div>
-          </div>
-        </div>
-      </div>
+      <Header />
 
       {/* Main Content */}
       <div className="container mx-auto px-6 space-y-4 pb-8">

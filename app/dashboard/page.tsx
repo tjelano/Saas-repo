@@ -8,6 +8,7 @@ import DashboardHeader from "@/components/DashboardHeader";
 import SupaUserInfo from "@/components/SupaUserInfo";
 import SupaLogoutButton from "@/components/SupaLogoutButton";
 import Image from "next/image";
+import Header from "@/components/Header";
 
 // Example interior design renders data - aligned with Design Studio templates
 const designExamples = [
@@ -119,10 +120,10 @@ const stats = [
   { label: "Collaborators", value: "3", icon: Users, change: "+1", changeType: "positive" },
 ];
 
-export default function Dashboard() {
+export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-background">
-      <DashboardHeader />
+      <Header />
       {/* Main Content */}
       <div className="container mx-auto px-6 py-8">
         <div className="space-y-8">

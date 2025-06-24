@@ -96,14 +96,14 @@ export function HeroSection() {
                                     </Link>
                                     <Button variant="outline" className="rounded-full" onClick={handleLogout}>
                                         <LogOut className="w-4 h-4 mr-2" /> Log out
-                                    </Button>
+                                        </Button>
                                 </>
                             ) : (
-                                <Link href="/login">
-                                    <Button variant="default" className="rounded-full">
+                                    <Link href="/login">
+                                        <Button variant="default" className="rounded-full">
                                         Log in
-                                    </Button>
-                                </Link>
+                                        </Button>
+                                    </Link>
                             )}
                         </div>
                         <div className="lg:hidden">
@@ -142,14 +142,14 @@ export function HeroSection() {
                                     </li>
                                 ))}
                                 <li className="border-t border-border pt-4 mt-2">
-                                    <div className="flex flex-col gap-2">
+                                        <div className="flex flex-col gap-2">
                                         {isLoggedIn ? (
                                             <>
                                                 <Link href="/dashboard" className="w-full">
-                                                    <Button variant="default" className="w-full">
-                                                        Dashboard
-                                                    </Button>
-                                                </Link>
+                                                <Button variant="default" className="w-full">
+                                                    Dashboard
+                                                </Button>
+                                            </Link>
                                                 <Button variant="outline" className="w-full" onClick={handleLogout}>
                                                     <LogOut className="w-4 h-4 mr-2" /> Log out
                                                 </Button>
@@ -161,7 +161,7 @@ export function HeroSection() {
                                                 </Button>
                                             </Link>
                                         )}
-                                    </div>
+                                        </div>
                                 </li>
                             </ul>
                         </div>
