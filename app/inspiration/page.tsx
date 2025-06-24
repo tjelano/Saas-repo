@@ -3,10 +3,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Heart, Filter, Home, LogOut } from "lucide-react";
+import { ArrowLeft, Heart, Filter, Home } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import LogoutButton from "@/components/LogoutButton";
 
 // Extended gallery of interior design examples - aligned with Design Studio templates
 const inspirationGallery = [
@@ -76,7 +75,6 @@ export default function InspirationPage() {
                   Dashboard
                 </Button>
               </Link>
-              <LogoutButton variant="outline" size="sm" />
               <ThemeToggle />
             </div>
           </div>

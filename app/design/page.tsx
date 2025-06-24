@@ -9,7 +9,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider";
 import { UploadCloud, Sparkles, Settings, Home, ArrowLeft } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import LogoutButton from "@/components/LogoutButton";
 
 const stylePrompts: { [key: string]: string } = {
   Modern: "A modern living room with minimalist design, open space, large windows, neutral color palette, sleek furniture, and subtle accent lighting",
@@ -136,7 +135,6 @@ export default function DesignStudio() {
                     Dashboard
                 </Button>
                 </Link>
-                <LogoutButton variant="outline" size="sm" />
                 <ThemeToggle />
             </div>
           </div>
