@@ -5,6 +5,9 @@ import Link from "next/link";
 import { Plus, Sparkles, Star, TrendingUp, Users, Zap } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import DashboardHeader from "@/components/DashboardHeader";
+import SupaUserInfo from "@/components/SupaUserInfo";
+import SupaLogoutButton from "@/components/SupaLogoutButton";
+import Image from "next/image";
 
 // Example interior design renders data - aligned with Design Studio templates
 const designExamples = [
@@ -186,11 +189,14 @@ export default function Dashboard() {
                   <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105">
                     <div className="relative">
                       <div className="w-full h-48 bg-muted flex items-center justify-center overflow-hidden">
-                        <img 
-                          src={example.image} 
-                          alt={example.title} 
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" 
-                        />
+                        <div className="relative w-full h-full">
+                          <Image 
+                            src={example.image} 
+                            alt={example.title} 
+                            fill
+                            className="object-cover group-hover:scale-110 transition-transform duration-300" 
+                          />
+                        </div>
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
                       <div className="absolute top-3 right-3">

@@ -19,6 +19,7 @@ import {
   Camera
 } from "lucide-react"
 import { motion, useScroll, useTransform, useInView, useSpring } from "framer-motion"
+import Image from "next/image"
 
 export default function AboutUsSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -178,11 +179,14 @@ export default function AboutUsSection() {
                 transition={{ duration: 0.8, delay: 0.3 }}
                 whileHover={{ scale: 1.03, transition: { duration: 0.3 } }}
               >
-                <img
-                  src="https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=2127&auto=format&fit=crop"
-                  alt="Modern Interior"
-                  className="w-full h-full object-cover"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src="https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=2127&auto=format&fit=crop"
+                    alt="Modern Interior"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent flex items-end justify-center p-4"
                   initial={{ opacity: 0 }}

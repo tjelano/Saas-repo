@@ -1,35 +1,76 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { createClient } from "@/utils/supabase/client"
 import { Button } from "@/components/ui/button"
+import { useRouter, useSearchParams } from "next/navigation"
 
 export default function SupaAuthForm() {
   const supabase = createClient()
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [view, setView] = useState<'login'|'signup'>("login")
 
+  // Check if user is already logged in
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        router.push('/dashboard')
+      }
+    }
+    checkUser()
+  }, [router, supabase.auth])
+
   async function handleEmailAuth(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError("")
-    if (view === "login") {
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
-      if (error) setError(error.message)
-    } else {
-      const { error } = await supabase.auth.signUp({ email, password })
-      if (error) setError(error.message)
+    
+    try {
+      if (view === "login") {
+        const { error } = await supabase.auth.signInWithPassword({ email, password })
+        if (error) {
+          setError(error.message)
+        } else {
+          // Redirect to dashboard or the original intended page
+          const redirectTo = searchParams.get('redirect') || '/dashboard'
+          router.push(redirectTo)
+        }
+      } else {
+        const { error } = await supabase.auth.signUp({ email, password })
+        if (error) {
+          setError(error.message)
+        } else {
+          setError("Check your email for the confirmation link!")
+        }
+      }
+    } catch (err) {
+      setError("An unexpected error occurred")
     }
+    
     setLoading(false)
   }
 
   async function handleSocial(provider: "google" | "github") {
     setLoading(true)
     setError("")
-    const { error } = await supabase.auth.signInWithOAuth({ provider })
-    if (error) setError(error.message)
+    
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({ 
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback?next=${searchParams.get('redirect') || '/dashboard'}`
+        }
+      })
+      if (error) setError(error.message)
+    } catch (err) {
+      setError("An unexpected error occurred")
+    }
+    
     setLoading(false)
   }
 
@@ -63,9 +104,18 @@ export default function SupaAuthForm() {
         <div className="flex-1 border-t" />
       </div>
       <div className="flex flex-col gap-2">
-        <Button variant="outline" onClick={() => handleSocial("google")}>Continue with Google</Button>
-        <Button variant="outline" onClick={() => handleSocial("github")}>Continue with GitHub</Button>
+        <Button variant="outline" onClick={() => handleSocial("google")} disabled={loading}>
+          Continue with Google
+        </Button>
+        <Button variant="outline" onClick={() => handleSocial("github")} disabled={loading}>
+          Continue with GitHub
+        </Button>
       </div>
+      {view === "login" && (
+        <div className="text-center mt-2">
+          <a href="/forgot-password" className="text-xs underline text-muted-foreground hover:text-foreground">Forgot password?</a>
+        </div>
+      )}
       {error && <div className="text-red-500 text-sm text-center">{error}</div>}
       <div className="text-center text-sm mt-2">
         {view === "login" ? (

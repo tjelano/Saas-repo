@@ -1,4 +1,4 @@
-import { integer, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { integer, pgTable, text, timestamp, uuid, jsonb } from 'drizzle-orm/pg-core';
 
 export const usersTable = pgTable('users_table', {
     id: uuid('id').primaryKey(),
@@ -17,7 +17,21 @@ export const designsTable = pgTable('designs_table', {
     createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
+export const generatedImagesTable = pgTable('generated_images', {
+    id: uuid('id').defaultRandom().primaryKey(),
+    userId: uuid('user_id').notNull().references(() => usersTable.id, { onDelete: 'cascade' }),
+    originalImageUrl: text('original_image_url'),
+    generatedImageUrl: text('generated_image_url').notNull(),
+    prompt: text('prompt').notNull(),
+    negativePrompt: text('negative_prompt'),
+    generationSettings: jsonb('generation_settings'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
 export type InsertUser = typeof usersTable.$inferInsert;
 export type SelectUser = typeof usersTable.$inferSelect;
 export type InsertDesign = typeof designsTable.$inferInsert;
 export type SelectDesign = typeof designsTable.$inferSelect;
+export type InsertGeneratedImage = typeof generatedImagesTable.$inferInsert;
+export type SelectGeneratedImage = typeof generatedImagesTable.$inferSelect;

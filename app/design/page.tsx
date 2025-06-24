@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider";
 import { UploadCloud, Sparkles, Settings, Home, ArrowLeft } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import Image from "next/image";
 
 const stylePrompts: { [key: string]: string } = {
   Modern: "A modern living room with minimalist design, open space, large windows, neutral color palette, sleek furniture, and subtle accent lighting",
@@ -156,7 +157,14 @@ export default function DesignStudio() {
             <Card className="aspect-video flex items-center justify-center p-2">
               <label htmlFor="image-upload-btn" className="w-full h-full flex items-center justify-center cursor-pointer">
                 {beforeImage ? (
-                  <img src={beforeImage} alt="Uploaded preview" className="rounded-lg w-full h-full object-cover" />
+                  <div className="relative w-full h-full">
+                    <Image 
+                      src={beforeImage} 
+                      alt="Uploaded preview" 
+                      fill
+                      className="rounded-lg object-cover" 
+                    />
+                  </div>
                 ) : (
                   <div className="text-center text-muted-foreground">
                     <UploadCloud className="w-8 h-8 mx-auto mb-2 opacity-50" />
@@ -176,7 +184,14 @@ export default function DesignStudio() {
                     <p className="text-sm">Generating design...</p>
                   </div>
               ) : generatedImage ? (
-                <img src={generatedImage} alt="Generated design" className="rounded-lg w-full h-full object-cover" />
+                <div className="relative w-full h-full">
+                  <Image 
+                    src={generatedImage} 
+                    alt="Generated design" 
+                    fill
+                    className="rounded-lg object-cover" 
+                  />
+                </div>
               ) : (
                 <div className="text-center text-muted-foreground">
                   <Sparkles className="w-8 h-8 mx-auto mb-2 opacity-50" />

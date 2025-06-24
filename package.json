@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "dotenv -e .env -- npx drizzle-kit migrate",
+    "migrate": "dotenv -e .env.local -- npx drizzle-kit migrate",
     "push-schema": "node ./scripts/push-schema.js",
     "setup:production": "node ./scripts/setup-production.js",
     "format": "prettier --write .",

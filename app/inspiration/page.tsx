@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Heart, Filter, Home } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import Image from "next/image";
 
 // Extended gallery of interior design examples - aligned with Design Studio templates
 const inspirationGallery = [
@@ -117,7 +118,14 @@ export default function InspirationPage() {
             <Link key={item.id} href={`/design?template=${item.templateId}`}>
               <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
                 <div className="aspect-video bg-muted relative">
-                  <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                  <div className="relative w-full h-full">
+                    <Image 
+                      src={item.image} 
+                      alt={item.title} 
+                      fill
+                      className="object-cover" 
+                    />
+                  </div>
                   <Button
                     variant="ghost"
                     size="icon"
