@@ -1,10 +1,6 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-
 import Link from 'next/link'
 import Image from 'next/image'
-
-import ProviderSigninBlock from '@/components/ProviderSigninBlock'
-import LoginForm from "@/components/LoginForm"
 import { Button } from "@/components/ui/button"
 export default function SubscribeSuccess() {
     return (
@@ -16,11 +12,9 @@ export default function SubscribeSuccess() {
                             <Image src="/logo.png" alt="logo" width={50} height={50} />
                         </Link>
                     </div>
-
                     <CardTitle className="text-2xl font-bold">Success</CardTitle>
                     <CardDescription>Thank you for subscribing!</CardDescription>
                 </CardHeader>
-
                 <CardFooter className="flex-col text-center">
                     <Button className="w-full text-sm " >
                         <Link href="/dashboard">
@@ -30,6 +24,5 @@ export default function SubscribeSuccess() {
                 </CardFooter>
             </Card>
         </div >
-
     )
 }

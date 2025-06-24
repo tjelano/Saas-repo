@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { motion, AnimatePresence } from "framer-motion"
 import { User } from '@supabase/supabase-js'
-import LogoutButton from "@/components/LogoutButton"
 
 const transitionVariants = {
     item: {
@@ -36,7 +35,7 @@ const navLinks = [
     { href: "#faq", label: "FAQ" },
 ]
 
-export function HeroSection({ user }: { user: User | null }) {
+export function HeroSection() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     return (
@@ -67,38 +66,16 @@ export function HeroSection({ user }: { user: User | null }) {
                             ))}
                         </div>
                         <div className="hidden lg:flex items-center gap-4">
-                            {user ? (
-                                <>
-                                    <Link href="/dashboard">
-                                        <Button variant="default" className="rounded-full">
-                                            Dashboard
-                                        </Button>
-                                    </Link>
-                                    <Link href="/design">
-                                        <Button variant="default" className="rounded-full">
-                                            Design
-                                        </Button>
-                                    </Link>
-                                    <LogoutButton variant="ghost" />
-                                </>
-                            ) : (
-                                <>
-                                    <Link href="/dashboard">
-                                        <Button variant="ghost">Dashboard</Button>
-                                    </Link>
-                                    <Link href="/design">
-                                        <Button variant="ghost">Design</Button>
-                                    </Link>
-                                    <Link href="/login">
-                                        <Button variant="ghost">Login</Button>
-                                    </Link>
-                                    <Link href="/signup">
-                                        <Button variant="default" className="rounded-full">
-                                            Sign Up
-                                        </Button>
-                                    </Link>
-                                </>
-                            )}
+                            <Link href="/dashboard">
+                                <Button variant="default" className="rounded-full">
+                                    Dashboard
+                                </Button>
+                            </Link>
+                            <Link href="/design">
+                                <Button variant="default" className="rounded-full">
+                                    Design
+                                </Button>
+                            </Link>
                         </div>
                         <div className="lg:hidden">
                             <Button
@@ -136,36 +113,18 @@ export function HeroSection({ user }: { user: User | null }) {
                                     </li>
                                 ))}
                                 <li className="border-t border-border pt-4 mt-2">
-                                    {user ? (
-                                        <div className="flex flex-col gap-2">
-                                            <Link href="/dashboard">
-                                                <Button variant="default" className="w-full">
-                                                    Dashboard
-                                                </Button>
-                                            </Link>
-                                            <Link href="/design">
-                                                <Button variant="default" className="w-full">
-                                                    Design
-                                                </Button>
-                                            </Link>
-                                            <LogoutButton variant="ghost" className="w-full" />
-                                        </div>
-                                    ) : (
-                                        <div className="flex flex-col gap-2">
-                                            <Link href="/dashboard" className="w-full">
-                                                <Button variant="ghost" className="w-full">Dashboard</Button>
-                                            </Link>
-                                            <Link href="/design" className="w-full">
-                                                <Button variant="ghost" className="w-full">Design</Button>
-                                            </Link>
-                                            <Link href="/login" className="w-full">
-                                                <Button variant="ghost" className="w-full">Login</Button>
-                                            </Link>
-                                            <Link href="/signup" className="w-full">
-                                                <Button variant="default" className="w-full">Sign Up</Button>
-                                            </Link>
-                                        </div>
-                                    )}
+                                    <div className="flex flex-col gap-2">
+                                        <Link href="/dashboard" className="w-full">
+                                            <Button variant="default" className="w-full">
+                                                Dashboard
+                                            </Button>
+                                        </Link>
+                                        <Link href="/design" className="w-full">
+                                            <Button variant="default" className="w-full">
+                                                Design
+                                            </Button>
+                                        </Link>
+                                    </div>
                                 </li>
                             </ul>
                         </div>
